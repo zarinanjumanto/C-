@@ -1,0 +1,64 @@
+#include <fstream>
+#include <vector>
+#include <iostream>
+#include <string>
+using namespace std;
+
+bool isMagicSquare(int a[3][3])
+{
+    bool seen[10] = {false};
+    for (int r = 0; r < 3; ++r)
+    {
+        for (int c = 0; c < 3; ++c)
+        {
+            int v = a[r][c];
+            if (v < 1 || v > 9 || seen[v]) return false;
+            seen[v] = true;
+        }
+    }
+
+    const int MAGIC = 15;
+
+    for (int r = 0; r < 3; ++r)
+    {
+        int sum = 0;
+        for (int c = 0; c < 3; ++c) sum += a[r][c];
+        if (sum != MAGIC) return false;
+    }
+
+    for (int c = 0; c < 3; ++c)
+    {
+        int sum = 0;
+        for (int r = 0; r < 3; ++r) sum += a[r][c];
+        if (sum != MAGIC) return false;
+    }
+
+    int d1 = a[0][0] + a[1][1] + a[2][2];
+    int d2 = a[0][2] + a[1][1] + a[2][0];
+    if (d1 != MAGIC || d2 != MAGIC) return false;
+
+    return true;
+}
+
+int main()
+{
+    int square[3][3];
+
+    for (int r = 0; r < 3; ++r)
+        for (int c = 0; c < 3; ++c)
+            cin >> square[r][c];
+
+    for (int r = 0; r < 3; ++r)
+    {
+        for (int c = 0; c < 3; ++c)
+            cout << square[r][c] << " ";
+        cout << '\n';
+    }
+
+    if (isMagicSquare(square))
+        cout << "It is a magic square\n";
+    else
+        cout << "It is not a magic square\n";
+
+    return 0;
+}
