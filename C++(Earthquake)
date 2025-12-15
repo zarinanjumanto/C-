@@ -1,0 +1,89 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+struct Earthquake
+{
+    string name;
+    string location;
+    double magnitude;
+
+    void printQuakeData()
+    {
+        cout << name << " " << location << " " << magnitude;
+    }
+
+    void enterDetails()
+    {
+        cin >> name >> location >> magnitude;
+    }
+};
+
+void swap(Earthquake& a, Earthquake& b)
+{
+    Earthquake temp = a;
+    a = b;
+    b = temp;
+}
+
+void sortQuake(vector<Earthquake>& earthquakes, int size)
+{
+    for (int i = 0; i < size - 1; ++i) {
+        int minIndex = i;
+        for (int j = i + 1; j < size; ++j) {
+            if (earthquakes[j].magnitude < earthquakes[minIndex].magnitude) {
+                minIndex = j;
+            }
+        }
+        if (minIndex != i) {
+            swap(earthquakes[i], earthquakes[minIndex]);
+        }
+    }
+}
+
+void insertQuake(vector<Earthquake>& quakes, Earthquake newQuake)
+{
+    int pos = 0;
+    while (pos < static_cast<int>(quakes.size()) &&
+           quakes[pos].magnitude < newQuake.magnitude) {
+        ++pos;
+    }
+    quakes.insert(quakes.begin() + pos, newQuake);
+}
+
+void printArray(vector<Earthquake>& array, int size)
+{
+    for (int i = 0; i < size; ++i) {
+        cout << "Index: " << i << " value Name: ";
+        array[i].printQuakeData();
+        cout << '\n';
+    }
+}
+
+int main()
+{
+    vector<Earthquake> quakes(5);
+
+    for (int i = 0; i < 5; ++i) {
+        quakes[i].enterDetails();
+    }
+
+    cout << "Unsorted records:" << '\n';
+    printArray(quakes, quakes.size());
+
+    sortQuake(quakes, quakes.size());
+
+    cout << '\n' << "Sorted records:" << '\n';
+    printArray(quakes, quakes.size());
+
+    Earthquake newQuake;
+    newQuake.enterDetails();
+
+    insertQuake(quakes, newQuake);
+
+    cout << '\n' << "Sorted records after insertion:" << '\n';
+    printArray(quakes, quakes.size());
+
+    return 0;
+}
